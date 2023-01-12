@@ -1,0 +1,31 @@
+#!/bin/bash
+
+#check for root privileges
+if [ "$EUID" -ne 0 ]
+  then
+  echo -e "\e[31m[-] Run It As Root...\e[0m"
+  exit
+fi
+
+#restore settings to default
+echo -e "\e[32m[+] Restoring Settings To Their Defaults...\e[0m"
+
+#stop tor service
+systemctl stop tor.service
+
+#restore /etc/tor/torrc to its defaults
+rm /etc/tor/torrc
+echo "" >> /etc/tor/torrc
+
+#restore /etc/resolv.conf to its defaults
+rm /etc/resolv.conf
+echo "" >> /etc/resolv.conf
+echo "    Done..."
+echo ""
+
+echo -e "\e[31m[-] You Need To Reboot Your System In Order To Stop This Tool...\e[0m"
+read -p "    Reboot Now?(y/N): " reboot_now
+case $reboot_now in
+  y|Y ) reboot +0;;
+  * ) echo ""; echo -e "\e[31m[-] Exiting...\e[0m" 
+esac

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+#check for root privileges
+if [ "$EUID" -ne 0 ]
+  then
+  echo -e "\e[31m[-] Run It As Root...\e[0m"
+  exit
+fi
+
+#reload tor to create new circuit
+echo -e "\e[32m[+] Changing Identity...\e[32m"
+systemctl reload tor.service
+echo ""
+
+echo -e "\e[32m[+] Done...\e[32m"
